@@ -128,7 +128,7 @@ sub path { shift->{path} }
 
 Does a propfind request.
 
-Parameters are 
+Parameters are basically 'path' and on_item for a per-item callback.
 
 =cut
 
