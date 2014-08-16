@@ -77,7 +77,7 @@ my @item;
 my $xml = Net::Async::HTTP::DAV::XML->new(
 	on_item	=> sub {
 		my $item = shift;
-		note sprintf("%-64.64s %12.12s %s\n", $item->{displayname}, ($item->{resourcetype} eq 'collection') ? '    <DIR>   ' : ($item->{getcontentlength} // 0), $item->{getcontenttype});
+		note sprintf("%-64.64s %12.12s %s\n", $item->{displayname}, ($item->{type} eq 'directory') ? '    <DIR>   ' : ($item->{size} // 0), $item->{getcontenttype});
 		push @item, $item;
 	}
 );

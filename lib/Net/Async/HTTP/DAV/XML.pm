@@ -1,8 +1,9 @@
 package Net::Async::HTTP::DAV::XML;
+
 use strict;
 use warnings;
+
 use parent qw(XML::SAX::Base);
-use Data::Dumper;
 
 use Date::Parse qw(str2time);
 
@@ -33,9 +34,9 @@ my %handler = (
 			$item->{modified} ||= str2time(delete $item->{getlastmodifieddate}) if exists $item->{getlastmodifieddate};
 			$item->{modified} ||= str2time(delete $item->{getlastmodified}) if exists $item->{getlastmodified};
 			$item->{size} = delete $item->{getcontentlength} if exists $item->{getcontentlength};
-			$item->{type} = (delete $item->{resourcetype} eq 'collection') ? 'directory' : 'file';
+			$item->{type} = ((delete $item->{resourcetype}) // '' eq 'collection') ? 'directory' : 'file';
 			$item->{path} = delete $item->{href} if exists $item->{href};
-			$item->{displayname} = '.' if $item->{path} eq $self->{path};
+			$item->{displayname} = '.' if $item->{path} eq ($self->{path} // '');
 			($item->{displayname}) = $item->{path} =~ m{([^/]+)$} unless defined $item->{displayname};
 			$self->maybe_invoke('on_item', $item);
 			delete $self->{item};
